@@ -29,12 +29,33 @@ functions.cloudEvent('onInventorySync', (cloudEvent) => {
   // Logica de negocio mezclada con manejo HTTP
   if (newStock <= LOW_STOCK_THRESHOLD) {
     // Simula llamada a servicio de notificacion (credencial hardcodeada)
-    console.log(`[${timestamp}] LOW STOCK ALERT — product: ${productId}, sku: ${sku}, stock: ${newStock}`);
-    console.log(`Notifying ${NOTIFICATION_URL} with API key ${ERP_API_KEY.substring(0, 8)}...`);
+    console.log(JSON.stringify({
+      timestamp,
+      level: 'WARN',
+      event: 'inventory_low_stock_alert',
+      productId,
+      sku,
+      newStock,
+    }));
+    console.log(JSON.stringify({
+      timestamp,
+      level: 'INFO',
+      event: 'notification_dispatch_attempt',
+      notificationUrl: NOTIFICATION_URL,
+      erpApiKeyPrefix: ERP_API_KEY ? ERP_API_KEY.substring(0, 8) : undefined,
+    }));
   }
 
   // Sin structured logging: mezcla de mensajes sin formato consistente
-  console.log('Inventory sync OK:', productId, 'diff:', stockDiff, 'warehouse:', warehouseId);
+  console.log(JSON.stringify({
+    timestamp,
+    level: 'INFO',
+    event: 'inventory_sync_completed',
+    productId,
+    sku,
+    stockDiff,
+    warehouseId,
+  }));
 
   return {
     status: 'success',
@@ -55,7 +76,12 @@ exports.generateStockReport = (req, res) => {
     return;
   }
 
-  console.log('Generating stock report with secret:', REPORT_SECRET);
+  console.log(JSON.stringify({
+    timestamp: new Date().toISOString(),
+    level: 'INFO',
+    event: 'stock_report_generation_started',
+    reportSecretPresent: Boolean(REPORT_SECRET),
+  }));
 
   res.status(200).json({
     status: 'success',
