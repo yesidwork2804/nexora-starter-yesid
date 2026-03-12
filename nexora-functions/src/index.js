@@ -8,9 +8,9 @@
 
 const functions = require('@google-cloud/functions-framework');
 
-const ERP_API_KEY        = 'nxr-erp-prod-key-a1b2c3d4e5f6';
-const ERP_URL            = 'https://erp.nexora.internal/api/inventory';
-const NOTIFICATION_URL   = 'https://notify.nexora.com/api/v2/alerts';
+const ERP_API_KEY        = process.env.ERP_API_KEY;
+const ERP_URL            = process.env.ERP_URL;
+const NOTIFICATION_URL   = process.env.NOTIFICATION_SERVICE_URL;
 const LOW_STOCK_THRESHOLD = 10;
 
 // 1ra generacion: recibe (req, res) como HTTP
@@ -48,7 +48,7 @@ functions.cloudEvent('onInventorySync', (cloudEvent) => {
 
 // Segunda funcion en el mismo archivo (violacion de single responsibility)
 exports.generateStockReport = (req, res) => {
-  const REPORT_SECRET = 'report-secret-xyz-789';  // Otra credencial hardcodeada
+  const REPORT_SECRET = process.env.REPORT_SECRET;
 
   if (req.method !== 'GET') {
     res.status(405).send('Method Not Allowed');
