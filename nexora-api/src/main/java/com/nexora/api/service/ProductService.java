@@ -3,7 +3,6 @@ package com.nexora.api.service;
 import com.nexora.api.model.Product;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ProductService {
     List<Product> getAllProducts();
@@ -12,7 +11,7 @@ public interface ProductService {
 
     Product createProduct(Product product);
 
-    Product updateStatus(Long id, Map<String, String> body);
+    Product updateStatus(Long id, String status);
 
     void deleteProduct(Long id);
 }

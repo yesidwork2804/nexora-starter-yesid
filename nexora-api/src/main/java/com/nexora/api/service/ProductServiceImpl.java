@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -57,9 +56,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateStatus(Long id, Map<String, String> body) {
+    public Product updateStatus(Long id, String status) {
         Product product = productRepository.findById(id).get();
-        product.setStatus(body.get("status"));
+        product.setStatus(status);
         product.setUpdatedAt(LocalDateTime.now());
         return productRepository.save(product);
     }
