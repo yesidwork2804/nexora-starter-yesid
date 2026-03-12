@@ -13,11 +13,13 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [filter, setFilter] = useState<string>('ALL')
 
+  const apiUrl = import.meta.env.VITE_API_URL
+
   // Logica de fetch directamente en el componente (sin custom hook)
   useEffect(() => {
     setLoading(true)
     // URL hardcodeada directamente en el componente
-    fetch('http://localhost:8080/api/products')
+    fetch(`${apiUrl}/api/products`)
       .then(res => {
         if (!res.ok) throw new Error('Error al cargar productos')
         return res.json()
