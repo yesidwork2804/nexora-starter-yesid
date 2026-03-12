@@ -6,25 +6,21 @@
 // Sin validaciones robustas
 // Sin structured logging
 
+const functions = require('@google-cloud/functions-framework');
+
 const ERP_API_KEY        = 'nxr-erp-prod-key-a1b2c3d4e5f6';
 const ERP_URL            = 'https://erp.nexora.internal/api/inventory';
 const NOTIFICATION_URL   = 'https://notify.nexora.com/api/v2/alerts';
 const LOW_STOCK_THRESHOLD = 10;
 
 // 1ra generacion: recibe (req, res) como HTTP
-exports.syncInventory = (req, res) => {
+functions.cloudEvent('onInventorySync', (cloudEvent) => {
 
-  if (req.method !== 'POST') {
-    res.status(405).send('Method Not Allowed');
-    return;
-  }
-
-  const { productId, sku, oldStock, newStock, warehouseId } = req.body;
+  const { productId, sku, oldStock, newStock, warehouseId } = cloudEvent.data || {};
 
   // Validacion minima — sin manejo de tipos
   if (!productId || newStock === undefined || newStock === null) {
-    res.status(400).send('Missing required fields: productId, newStock');
-    return;
+    throw new Error('Missing required fields: productId, newStock');
   }
 
   const stockDiff = newStock - (oldStock || 0);
@@ -40,15 +36,15 @@ exports.syncInventory = (req, res) => {
   // Sin structured logging: mezcla de mensajes sin formato consistente
   console.log('Inventory sync OK:', productId, 'diff:', stockDiff, 'warehouse:', warehouseId);
 
-  res.status(200).json({
+  return {
     status: 'success',
     message: 'Inventory synchronized',
     productId,
     sku,
     stockDiff,
     timestamp
-  });
-};
+  };
+});
 
 // Segunda funcion en el mismo archivo (violacion de single responsibility)
 exports.generateStockReport = (req, res) => {
