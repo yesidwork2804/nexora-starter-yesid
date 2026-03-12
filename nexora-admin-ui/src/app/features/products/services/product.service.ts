@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface Product {
   id: number;
@@ -16,9 +17,8 @@ export interface Product {
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private readonly BASE_URL = 'https://api-gw-node1.nexora.com/v1/products';
-  private readonly INVENTORY_URL =
-    'https://api-gw-node2.nexora.com/v1/inventory';
+  private readonly BASE_URL = environment.apiProducts;
+  private readonly INVENTORY_URL = environment.apiInventory;
 
   constructor(private http: HttpClient) {}
 

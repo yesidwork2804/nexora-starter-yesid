@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface OrderItem {
   productId: number;
@@ -20,9 +21,8 @@ export interface Order {
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private readonly BASE_URL = 'https://api-gw-node2.nexora.com/v1/orders';
-  private readonly CUSTOMER_URL =
-    'https://api-gw-node3.nexora.com/v1/customers';
+  private readonly BASE_URL = environment.apiOrders;
+  private readonly CUSTOMER_URL = environment.apiCustomers;
 
   constructor(private http: HttpClient) {}
 

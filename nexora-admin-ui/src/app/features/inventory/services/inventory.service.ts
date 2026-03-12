@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 export interface InventoryMovement {
   id: number;
@@ -22,8 +23,8 @@ export interface StockLevel {
 
 @Injectable({ providedIn: 'root' })
 export class InventoryService {
-  private readonly BASE_URL = 'https://api-gw-node2.nexora.com/v1/inventory';
-  private readonly REPORTS_URL = 'https://api-gw-node4.nexora.com/v1/reports';
+  private readonly BASE_URL = environment.apiInventory;
+  private readonly REPORTS_URL = environment.apiReports;
 
   constructor(private http: HttpClient) {}
 
