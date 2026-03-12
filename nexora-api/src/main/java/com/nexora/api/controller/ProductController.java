@@ -4,6 +4,7 @@ import com.nexora.api.dto.ProductRequestDto;
 import com.nexora.api.dto.ProductResponseDto;
 import com.nexora.api.dto.UpdateProductStatusRequestDto;
 import com.nexora.api.model.Product;
+import com.nexora.api.model.ProductStatus;
 import com.nexora.api.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,7 +74,7 @@ public class ProductController {
         dto.setPrice(product.getPrice());
         dto.setStock(product.getStock());
         dto.setCategory(product.getCategory());
-        dto.setStatus(product.getStatus());
+        dto.setStatus(product.getStatus() != null ? product.getStatus().name() : null);
         dto.setCreatedAt(product.getCreatedAt());
         dto.setUpdatedAt(product.getUpdatedAt());
         return dto;
@@ -87,7 +88,14 @@ public class ProductController {
         product.setPrice(dto.getPrice());
         product.setStock(dto.getStock());
         product.setCategory(dto.getCategory());
-        product.setStatus(dto.getStatus());
+        product.setStatus(parseStatus(dto.getStatus()));
         return product;
+    }
+
+    private static ProductStatus parseStatus(String status) {
+        if (status == null || status.trim().isEmpty()) {
+            return null;
+        }
+        return ProductStatus.valueOf(status);
     }
 }

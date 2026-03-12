@@ -1,6 +1,7 @@
 package com.nexora.api.service;
 
 import com.nexora.api.model.Product;
+import com.nexora.api.model.ProductStatus;
 import com.nexora.api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +45,9 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("El SKU ya existe");
         }
 
-        List<String> validStatuses = Arrays.asList("ACTIVE", "INACTIVE", "DISCONTINUED");
+        List<ProductStatus> validStatuses = Arrays.asList(ProductStatus.ACTIVE, ProductStatus.INACTIVE, ProductStatus.DISCONTINUED);
         if (product.getStatus() == null || !validStatuses.contains(product.getStatus())) {
-            product.setStatus("ACTIVE");
+            product.setStatus(ProductStatus.ACTIVE);
         }
 
         product.setCreatedAt(LocalDateTime.now());
@@ -58,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product updateStatus(Long id, String status) {
         Product product = productRepository.findById(id).get();
-        product.setStatus(status);
+        product.setStatus(status != null ? ProductStatus.valueOf(status) : null);
         product.setUpdatedAt(LocalDateTime.now());
         return productRepository.save(product);
     }
