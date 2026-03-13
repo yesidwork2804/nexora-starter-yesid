@@ -8,7 +8,7 @@ import { useProducts } from './hooks/useProducts'
 // Usa 'any' para el tipo de los datos
 
 function App() {
-  const { products, loading, error } = useProducts()
+  const { products, loading, error, reload } = useProducts()
   const [filter, setFilter] = useState<string>('ALL')
 
   const filtered = products.filter((p) =>
@@ -16,7 +16,12 @@ function App() {
   )
 
   if (loading) return <div className="loading">Cargando productos...</div>
-  if (error)   return <div className="error">Error: {error}</div>
+  if (error)   return (
+    <div className="error">
+      <div>Error: {error}</div>
+      <button className="retry" onClick={reload}>Reintentar</button>
+    </div>
+  )
 
   return (
     <div className="container">
@@ -32,6 +37,10 @@ function App() {
             {s}
           </button>
         ))}
+      </div>
+
+      <div className="success">
+        Productos cargados: {products.length}
       </div>
 
       <table className="products-table">
