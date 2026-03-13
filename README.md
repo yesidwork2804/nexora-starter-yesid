@@ -171,16 +171,6 @@ En una migración real esperaría desafíos extra como datos viejos inconsistent
 
 Seguí la estructura de ramas y el formato de commits que pide la prueba técnica:
 
-**Cómo revisar cada módulo**
-- Cada rama `feature/module*` contiene **solamente los cambios de ese módulo**.
-- Para ver lo que hice en un módulo, cambia a esa rama:
-  ```bash
-  git checkout feature/module1-angular-migration
-  git log --oneline
-  git diff main
-  ```
-- Los cambios adicionales (mejoras fuera del alcance base de la prueba) están en la rama `dev`.
-
 **Estructura de ramas**
 - `feature/module1-angular-migration`
 - `feature/module2-node-cloud-functions`
@@ -191,7 +181,15 @@ Seguí la estructura de ramas y el formato de commits que pide la prueba técnic
 - Un commit por tarea/subtarea (no un solo commit con todo).
 - Mensajes descriptivos con formato `feat:`, `fix:`, `refactor:`, `test:`, `docs:`.
 
-**Rama extra — mejoras post-prueba**
+**Cómo revisar cada módulo**
+- Cada rama `feature/module*` contiene **solamente los cambios de ese módulo**.
+- Para ver lo que hice en un módulo, cambia a esa rama:
+  ```bash
+  git checkout feature/module1-angular-migration
+  git log --oneline
+  git diff main
+  ```
+- Los cambios adicionales (mejoras fuera del alcance base de la prueba) están en la rama `dev`. Si hay mejoras nuevas en `dev`, se documentan en el README de `dev`.
 
 - `feature/post-prueba-mejoras`
 - Intención: mejoras adicionales (buenas prácticas/limpieza) una vez cumplidos los entregables base.
