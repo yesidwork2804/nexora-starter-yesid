@@ -189,7 +189,11 @@ Seguí la estructura de ramas y el formato de commits que pide la prueba técnic
   git log --oneline
   git diff main
   ```
+- El README técnico (este documento) está en la rama `main`, como se pidió en la prueba.
 - Los cambios adicionales (mejoras fuera del alcance base de la prueba) están en la rama `dev`. Si hay mejoras nuevas en `dev`, se documentan en el README de `dev`.
+
+**Nota sobre la rama `dev`**
+- La rama `dev` está actualizada con **todos los cambios de las 4 ramas** (módulos 1, 2, 3A y 3B). Si prefieres ver todo integrado en un solo lugar, revisa `dev`.
 
 - `feature/post-prueba-mejoras`
 - Intención: mejoras adicionales (buenas prácticas/limpieza) una vez cumplidos los entregables base.
