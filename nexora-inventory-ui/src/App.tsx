@@ -1,38 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 
-import type { Product } from './types/product'
+import { useProducts } from './hooks/useProducts'
 
 // Sin interfaces tipadas para la respuesta de la API
 // El fetch se hace directamente en el componente (deberia ser un custom hook)
 // Usa 'any' para el tipo de los datos
 
 function App() {
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { products, loading, error } = useProducts()
   const [filter, setFilter] = useState<string>('ALL')
-
-  const apiUrl = import.meta.env.VITE_API_URL
-
-  // Logica de fetch directamente en el componente (sin custom hook)
-  useEffect(() => {
-    setLoading(true)
-    // URL hardcodeada directamente en el componente
-    fetch(`${apiUrl}/api/products`)
-      .then(res => {
-        if (!res.ok) throw new Error('Error al cargar productos')
-        return res.json()
-      })
-      .then((data: unknown) => {
-        setProducts(data as Product[])
-        setLoading(false)
-      })
-      .catch(err => {
-        setError(err.message)
-        setLoading(false)
-      })
-  }, [])
 
   const filtered = products.filter((p) =>
     filter === 'ALL' ? true : p.status === filter
