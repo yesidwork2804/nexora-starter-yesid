@@ -1,41 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
+
+import { useProducts } from './hooks/useProducts'
 
 // Sin interfaces tipadas para la respuesta de la API
 // El fetch se hace directamente en el componente (deberia ser un custom hook)
 // Usa 'any' para el tipo de los datos
 
 function App() {
-  const [products, setProducts] = useState<any[]>([])  // any[] deberia ser Product[]
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { products, loading, error, reload } = useProducts()
   const [filter, setFilter] = useState<string>('ALL')
 
-  // Logica de fetch directamente en el componente (sin custom hook)
-  useEffect(() => {
-    setLoading(true)
-    // URL hardcodeada directamente en el componente
-    fetch('http://localhost:8080/api/products')
-      .then(res => {
-        if (!res.ok) throw new Error('Error al cargar productos')
-        return res.json()
-      })
-      .then((data: any) => {        // any - sin tipado fuerte
-        setProducts(data)
-        setLoading(false)
-      })
-      .catch(err => {
-        setError(err.message)
-        setLoading(false)
-      })
-  }, [])
-
-  const filtered = products.filter((p: any) =>
+  const filtered = products.filter((p) =>
     filter === 'ALL' ? true : p.status === filter
   )
 
   if (loading) return <div className="loading">Cargando productos...</div>
-  if (error)   return <div className="error">Error: {error}</div>
+  if (error)   return (
+    <div className="error">
+      <div>Error: {error}</div>
+      <button className="retry" onClick={reload}>Reintentar</button>
+    </div>
+  )
 
   return (
     <div className="container">
@@ -53,6 +39,10 @@ function App() {
         ))}
       </div>
 
+      <div className="success">
+        Productos cargados: {products.length}
+      </div>
+
       <table className="products-table">
         <thead>
           <tr>
@@ -65,7 +55,7 @@ function App() {
           </tr>
         </thead>
         <tbody>
-          {filtered.map((product: any) => (
+          {filtered.map((product) => (
             <tr key={product.id}>
               <td>{product.sku}</td>
               <td>{product.name}</td>
