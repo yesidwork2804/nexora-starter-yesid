@@ -1,6 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
 import { ProductService } from './product.service';
+import { environment } from 'src/environments/environment';
 
 describe('ProductService', () => {
   let service: ProductService;
@@ -18,21 +22,65 @@ describe('ProductService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call the old api-gw-node1 URL to fetch products', () => {
-    const mockWrappedResponse = {
-      status: 'success', statusCode: 200, message: 'OK', timestamp: '2024-01-01T00:00:00',
-      data: [{ id: 1, sku: 'NXR-001', name: 'Widget Pro', price: 99.99, stock: 50, status: 'ACTIVE' }],
-      pagination: { page: 1, pageSize: 10, totalItems: 1, totalPages: 1 }
-    };
+  it('should call the new endpoint to fetch product', () => {
+    const mockResponse = [
+      {
+        id: 1,
+        sku: 'NXR-001',
+        name: 'Widget Pro',
+        price: 99.99,
+        stock: 50,
+        status: 'ACTIVE',
+      },
+    ];
 
-    service.getProducts().subscribe(response => {
-      // Actualmente el servicio retorna el wrapper completo
-      expect(response.data.length).toBe(1);
-      expect(response.status).toBe('success');
+    service.getProducts().subscribe((response) => {
+      expect(response.length).toBe(1);
     });
 
-    const req = httpMock.expectOne('https://api-gw-node1.nexora.com/v1/products');
+    const req = httpMock.expectOne(environment.apiProducts);
     expect(req.request.method).toBe('GET');
-    req.flush(mockWrappedResponse);
+    req.flush(mockResponse);
+  });
+
+  it('should call inventory endpoint to update stock', () => {
+    const productId = 10;
+    const quantity = 3;
+
+    let completed = false;
+
+    service.updateStock(productId, quantity).subscribe((response) => {
+      completed = true;
+    });
+
+    const req = httpMock.expectOne(`${environment.apiInventory}/stock-update`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual({ productId, quantity });
+    req.flush(null);
+
+    expect(completed).toBeTrue();
+  });
+
+  it('should call products endpoint to deactivate a product', () => {
+    const id = 7;
+    const mockResponse = {
+      id,
+      sku: 'NXR-007',
+      name: 'Widget Basic',
+      description: 'Basic widget',
+      price: 19.99,
+      stock: 0,
+      category: 'widgets',
+      status: 'INACTIVE',
+    };
+
+    service.deactivateProduct(id).subscribe((response) => {
+      expect(response.status).toBe('INACTIVE');
+    });
+
+    const req = httpMock.expectOne(`${environment.apiProducts}/${id}/status`);
+    expect(req.request.method).toBe('PATCH');
+    expect(req.request.body).toEqual({ status: 'INACTIVE' });
+    req.flush(mockResponse);
   });
 });
