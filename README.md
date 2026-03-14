@@ -1,10 +1,10 @@
-# Nexora Migration — README técnico
+# 🧭 Nexora Migration — README técnico
 
 Repositorio con los módulos de la prueba técnica (frontend + backend + funciones). Este README está escrito como guía de ejecución y como bitácora de decisiones.
 
 ---
 
-## Sección 1 — Cómo ejecutar el proyecto
+## 🚀 Sección 1 — Cómo ejecutar el proyecto
 
 ### ✅ Prerrequisitos (versiones)
 
@@ -68,7 +68,7 @@ npm test
 
 ---
 
-## Sección 2 — Decisiones técnicas
+## 🧠 Sección 2 — Decisiones técnicas
 
 En cada módulo respondo estas 4 preguntas:
 1) Decisiones y por qué.
@@ -76,14 +76,14 @@ En cada módulo respondo estas 4 preguntas:
 3) Qué haría diferente con más tiempo.
 4) Incertidumbre.
 
-### 🅜 Módulo 1
+### 🅜 Módulo 1 — `nexora-admin-ui`
 
 - **[Decisiones]**
   - Se corrigieron errores de compilación agregando `@types/node` **v16** para solucionar problemas de compatibilidad.
   - Se crearon los módulos definidos en el `app-routing`.
   - Para la tarea 1.3 se asumió la existencia de la ruta de reportes detrás de Kong.
   - Los errores del test fallan porque el spec todavía prueba el “wrapper” viejo (`status`, `data`, `pagination`).
-  - Escogí los 2 test para las funciones (`updateStock`, `deactivateProduct`) por temas de complejidad, si son mas complejos tienden a romperse mas, los demás pueden tener una funcionalidad parecida al que ya traía de la función getProducts.
+  - Se escogieron 2 tests para las funciones (`updateStock`, `deactivateProduct`) por temas de complejidad: si son más complejos tienden a romperse más; los demás pueden tener una funcionalidad parecida a la que ya traía la función `getProducts`.
 
 - **[Trade-offs]**
   - No se cubrieron todos los casos de tests por tiempo; se escogieron los de mayor impacto.
@@ -97,11 +97,11 @@ En cada módulo respondo estas 4 preguntas:
 ### 🅜 Módulo 2 — `nexora-functions`
 
 - **[Decisiones]**
-  - Migré `syncInventory` a **CloudEvents (2da generación)** con `@google-cloud/functions-framework`.
-  - Reemplacé credenciales hardcodeadas por `process.env`.
-  - Apliqué logging JSON estructurado para observabilidad en los `console.log`.
-  - Separé responsabilidades: **una función por archivo**.
-  - Ajusté tests Jest para validar el handler CloudEvents.
+  - Se migró `syncInventory` a **CloudEvents (2da generación)** con `@google-cloud/functions-framework`.
+  - Se reemplazaron credenciales hardcodeadas por `process.env`.
+  - Se aplicó logging JSON estructurado para observabilidad.
+  - Se separaron responsabilidades: **una función por archivo**.
+  - Se ajustaron tests Jest para validar el handler CloudEvents.
 
 - **[Trade-offs]**
   - Mantener validaciones mínimas y comportamiento existente para no ampliar el alcance.
@@ -110,17 +110,17 @@ En cada módulo respondo estas 4 preguntas:
   - Dejar validación de payload más estricta (por ejemplo, validar campos requeridos y tipos) y mejorar los mensajes de error para que sean más claros.
 
 - **[Incertidumbre]**
-  - Al inicio no tenía tan claro el concepto de “1ra generación vs 2da generación” en Cloud Functions (más como terminología). Ya con el ejercicio entendí que el cambio principal es cómo se firma/recibe el evento (HTTP vs evento tipo CloudEvents), no la lógica de negocio como tal.
+  - Al inicio no tenía claro el concepto de “1ra generación vs 2da generación” en Cloud Functions (más como terminología). Ya con el ejercicio entendí que el cambio principal es cómo se firma/recibe el evento (HTTP vs evento tipo CloudEvents), no la lógica de negocio como tal.
 
 ### 🅜 Módulo 3A — `nexora-api`
 
 - **[Decisiones]**
-  - Separé capas creando `Service` y moviendo la lógica fuera del controller.
-  - Usé **inyección por constructor** para dependencias explícitas y mejor testabilidad.
-  - Agregué **DTOs** para que el frontend no dependa directamente del modelo de base de datos (así puedo cambiar el modelo interno sin romper el contrato).
-  - Moví configuración sensible a **variables de entorno** (`application.properties` con placeholders).
-  - Convertí `status` a **Enum** para integridad de dominio.
-  - Implementé `@RestControllerAdvice` + 2 unit tests con JUnit 5 + Mockito.
+  - Se separaron capas creando `Service` y moviendo la lógica fuera del controller.
+  - Se usó **inyección por constructor** para dependencias explícitas y mejor testabilidad.
+  - Se agregaron **DTOs** para que el frontend no dependa directamente del modelo de base de datos.
+  - Se movió configuración sensible a **variables de entorno** (`application.properties` con placeholders).
+  - Se convirtió `status` a **Enum** para integridad de dominio.
+  - Se implementó `@RestControllerAdvice` + 2 unit tests con JUnit 5 + Mockito.
 
 - **[Trade-offs]**
   - Para no abrir demasiado el alcance, preferí hacer el mapeo DTO↔Entidad y mover solo lo necesario. Con más tiempo, lo automatizaría o lo centralizaría mejor.
@@ -131,19 +131,19 @@ En cada módulo respondo estas 4 preguntas:
 ### 🅜 Módulo 3B — `nexora-inventory-ui`
 
 - **[Decisiones]**
-  - Eliminé `any` tipando la respuesta con `Product`.
-  - Moví la URL base a `VITE_API_URL`.
-  - Saqué la lógica de cargar productos del componente y la moví a un hook `useProducts`, para que `App.tsx` se enfoque en mostrar la información.
-  - Mejoré estados con indicador de éxito y botón de reintento.
+  - Se eliminó `any` tipando la respuesta con `Product`.
+  - Se movió la URL base a `VITE_API_URL`.
+  - Se sacó la lógica de cargar productos del componente y se movió a un hook `useProducts`, para que `App.tsx` se enfoque en mostrar la información.
+  - Se mejoraron estados con indicador de éxito y botón de reintento.
 
 - **[Trade-offs]**
-  - Para ir rápido, asumí que la API siempre responde con la forma correcta y la tipé con TypeScript. Si el backend cambia o responde algo distinto, el problema se ve cuando lo ejecutas.
+  - Para avanzar rápido, se asumió que la API responde con la forma correcta y se tipó con TypeScript. Si el backend cambia o responde algo distinto, el problema se ve al ejecutarlo.
 
 - **[Con más tiempo]**
-  - Haría el hook más “a prueba de fallos”: validar que la respuesta sea JSON antes de parsearla y dejar mensajes de error más guiados. Si hubiera tiempo extra, añadiría pruebas automatizadas para el hook.
+  - Haría el hook más “a prueba de fallos”: validar que la respuesta sea JSON antes de parsearla y dejar mensajes de error más guiados.
 ---
 
-## Sección 3 — Mapeo al proyecto Nexora (máx. 10 líneas)
+## 🗺️ Sección 3 — Mapeo al proyecto Nexora (máx. 10 líneas)
 
 Lo trabajado se mapea a una migración real incremental:
 1) Aislar lógica por capas (controller/service/repository),
@@ -155,19 +155,17 @@ En una migración real esperaría desafíos extra como datos viejos inconsistent
 
 ---
 
-## Sección 4 — Bloqueos y comunicación
+## 🚧 Sección 4 — Bloqueos y comunicación
 
-- **[Bloqueo: front recibe HTML en vez de JSON]**
-  - **Qué fue:** al cargar productos apareció `Unexpected token '<'...`. Eso pasa cuando el front intenta leer JSON, pero en realidad el servidor devolvió una página HTML.
-  - **Qué intenté:**
-    - Confirmar que el backend estaba corriendo y que `http://localhost:8080/api/products` devolvía JSON.
-    - Revisar `VITE_API_URL` y crear `nexora-inventory-ui/.env` usando `.env.example`.
-    - Reiniciar el server de Vite para que tome las variables de entorno.
-  - **Cómo lo comunicaría:** “Esto casi siempre significa que estamos apuntando a la URL equivocada o que el backend no está levantado. Propongo dejar documentado el `.env` y validar el tipo de respuesta para mostrar un mensaje más claro.”
+- **[Bloqueo: ejecución de tests de API en Windows]**
+  - **Qué fue:** al intentar ejecutar pruebas de `nexora-api` no se encontraba `mvn` en el entorno local.
+  - **Impacto:** no se podían correr `mvn test`/`mvnw` desde PowerShell sin instalar/configurar Maven.
+  - **Cómo se abordó:** se recomendó instalar Maven (o ejecutar desde un entorno que ya lo incluya) y validar con `mvn -v` antes de correr los tests.
+  - **Cómo se comunicaría:** “En Windows, la ejecución de tests depende de tener Maven disponible en el PATH. Se deja la verificación `mvn -v` como precondición para evitar bloqueos.”
 
 ---
 
-## Nota sobre ramas y commits
+## 🌿 Nota sobre ramas y commits
 
 Seguí la estructura de ramas y el formato de commits que pide la prueba técnica:
 
@@ -177,19 +175,14 @@ Seguí la estructura de ramas y el formato de commits que pide la prueba técnic
 - `feature/module3a-spring-boot`
 - `feature/module3b-react`
 
-**Commits atómicos**
-- Un commit por tarea/subtarea (no un solo commit con todo).
-- Mensajes descriptivos con formato `feat:`, `fix:`, `refactor:`, `test:`, `docs:`.
-
 **Cómo revisar cada módulo**
 - Cada rama `feature/module*` contiene **solamente los cambios de ese módulo**.
-- Para ver lo que hice en un módulo, cambia a esa rama:
+- Para ver lo que se realizó en un módulo, cambia a esa rama:
   ```bash
   git checkout feature/module1-angular-migration
   git log --oneline
   git diff main
   ```
-- El README técnico (este documento) está en la rama `main`, como se pidió en la prueba.
 - Los cambios adicionales (mejoras fuera del alcance base de la prueba) están en la rama `dev`. Si hay mejoras nuevas en `dev`, se documentan en el README de `dev`.
 
 **Nota sobre la rama `dev`**
@@ -197,4 +190,4 @@ Seguí la estructura de ramas y el formato de commits que pide la prueba técnic
 
 - `feature/post-prueba-mejoras`
 - Intención: mejoras adicionales (buenas prácticas/limpieza) una vez cumplidos los entregables base.
-- Mantuve commits pequeños y scope por proyecto (por ejemplo, `refactor(nexora-api): ...`, `refactor(nexora-inventory-ui): ...`).
+- Se mantuvo commits pequeños y scope por proyecto (por ejemplo, `refactor(nexora-api): ...`, `refactor(nexora-inventory-ui): ...`).
