@@ -171,11 +171,20 @@ En una migración real esperaría desafíos extra como datos viejos inconsistent
 
 Seguí la estructura de ramas y el formato de commits que pide la prueba técnica:
 
+**Rama `dev` (integración)**
+- Esta rama está la versión integrada con los cambios de los 4 módulos.
+- Si quieres ver todo funcionando junto en una sola rama, revisa aquí.
+
 **Estructura de ramas**
 - `feature/module1-angular-migration`
 - `feature/module2-node-cloud-functions`
 - `feature/module3a-spring-boot`
 - `feature/module3b-react`
+
+**Actualizaciones futuras**
+- Las mejoras extra (post-prueba) se documentarán en este README.
+- Pendientes/ideas:
+  - [ ] 
 
 **Commits atómicos**
 - Un commit por tarea/subtarea (no un solo commit con todo).
