@@ -10,4 +10,3 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   bootstrap: [],
 })
 export class CustomersModule {}
-
