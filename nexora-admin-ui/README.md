@@ -1,27 +1,52 @@
-# NexoraAdminUi
+# Nexora Admin UI (`nexora-admin-ui`)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.13.
+Aplicación de administración construida con Angular.
 
-## Development server
+Este README parte de la base de lo entregado en la **prueba técnica** y documenta las **mejoras aplicadas después** sobre los módulos.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- Se mantiene lo esencial (cómo ejecutar y probar).
+- Se explica qué se mejoró y con qué objetivo.
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## 🚀 Sección 1 — Cómo ejecutar y probar
 
-## Build
+### ✅ Prerrequisitos
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Node.js / npm instalados.
+- Angular CLI disponible.
 
-## Running unit tests
+### ▶️ Ejecutar en local
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+npm install
+ng serve
+```
 
-## Running end-to-end tests
+Abrir:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+- `http://localhost:4200/`
 
-## Further help
+### 🧪 Ejecutar unit tests
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+ng test
+```
+
+---
+
+## 🌟 Mejoras y actualizaciones
+
+### 🅜 Módulo 1 — Refactor (arquitectura + DI + tests)
+
+- Se reorganizó el módulo con **separación por capas** para reducir acoplamiento y mejorar mantenibilidad:
+  - **Dominio**: contratos (gateways), modelos y casos de uso.
+  - **Infraestructura**: implementación HTTP de esos contratos.
+  - **UI / Features**: componentes consumiendo casos de uso en lugar de depender directamente de HTTP.
+- Se implementó **inyección de dependencias por contrato** (tokens) para permitir cambiar implementaciones sin tocar la UI.
+- Se incorporaron **usecases** como punto único de entrada a la lógica, evitando duplicación y dejando la UI más delgada.
+- Se agregaron **pruebas unitarias** enfocadas en:
+  - casos de uso (con gateways mockeados),
+  - gateways HTTP (validando endpoints, métodos y payload con `HttpClientTestingModule`).
+- Se corrigió un error de runtime típico en Angular:
+  - en módulos feature se usa `CommonModule` y no `BrowserModule`.
