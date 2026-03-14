@@ -3,24 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface OrderItem {
-  productId: number;
-  quantity: number;
-  unitPrice: number;
-}
-
-export interface Order {
-  id: number;
-  orderNumber: string;
-  customerId: number;
-  items: OrderItem[];
-  totalAmount: number;
-  status: 'PENDING' | 'CONFIRMED' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED';
-  createdAt: string;
-}
+import type { OrderGateway } from '../../../domain/gateways/order.gateway';
+import type { Order, OrderStatus } from '../../../domain/models/order.model';
 
 @Injectable({ providedIn: 'root' })
-export class OrderService {
+export class OrderService implements OrderGateway {
   private readonly BASE_URL = environment.apiOrders;
   private readonly CUSTOMER_URL = environment.apiCustomers;
 
@@ -38,7 +25,7 @@ export class OrderService {
     return this.http.post<Order>(this.BASE_URL, order);
   }
 
-  updateOrderStatus(id: number, status: Order['status']): Observable<Order> {
+  updateOrderStatus(id: number, status: OrderStatus): Observable<Order> {
     return this.http.patch<Order>(`${this.BASE_URL}/${id}/status`, { status });
   }
 

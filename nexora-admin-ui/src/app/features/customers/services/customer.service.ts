@@ -3,20 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface Customer {
-  id: number;
-  code: string;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  tier: 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
-  status: 'ACTIVE' | 'INACTIVE';
-  totalOrders?: number;
-}
+import type { CustomerGateway } from '../../../domain/gateways/customer.gateway';
+import type {
+  Customer,
+  CustomerTier,
+} from '../../../domain/models/customer.model';
 
 @Injectable({ providedIn: 'root' })
-export class CustomerService {
+export class CustomerService implements CustomerGateway {
   private readonly BASE_URL = environment.apiCustomers;
 
   constructor(private http: HttpClient) {}
@@ -29,7 +23,7 @@ export class CustomerService {
     return this.http.get<Customer>(`${this.BASE_URL}/${id}`);
   }
 
-  updateCustomerTier(id: number, tier: Customer['tier']): Observable<Customer> {
+  updateCustomerTier(id: number, tier: CustomerTier): Observable<Customer> {
     return this.http.patch<Customer>(`${this.BASE_URL}/${id}/tier`, { tier });
   }
 

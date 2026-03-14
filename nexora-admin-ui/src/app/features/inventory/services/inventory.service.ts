@@ -3,26 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface InventoryMovement {
-  id: number;
-  productId: number;
-  type: 'IN' | 'OUT' | 'ADJUSTMENT';
-  quantity: number;
-  reason: string;
-  createdAt: string;
-}
-
-export interface StockLevel {
-  productId: number;
-  sku: string;
-  currentStock: number;
-  reservedStock: number;
-  availableStock: number;
-  reorderPoint: number;
-}
+import type { InventoryGateway } from '../../../domain/gateways/inventory.gateway';
+import type {
+  InventoryMovement,
+  StockLevel,
+} from '../../../domain/models/inventory.model';
 
 @Injectable({ providedIn: 'root' })
-export class InventoryService {
+export class InventoryService implements InventoryGateway {
   private readonly BASE_URL = environment.apiInventory;
   private readonly REPORTS_URL = environment.apiReports;
 

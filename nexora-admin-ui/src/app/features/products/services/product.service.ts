@@ -3,20 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
-export interface Product {
-  id: number;
-  sku: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
-  category: string;
-  status: 'ACTIVE' | 'INACTIVE' | 'DISCONTINUED';
-  createdAt?: string;
-}
+import type { ProductGateway } from '../../../domain/gateways/product.gateway';
+import type { Product } from '../../../domain/models/product.model';
 
 @Injectable({ providedIn: 'root' })
-export class ProductService {
+export class ProductService implements ProductGateway {
   private readonly BASE_URL = environment.apiProducts;
   private readonly INVENTORY_URL = environment.apiInventory;
 
