@@ -20,7 +20,9 @@ public class Product {
     private BigDecimal price;
     private Integer stock;
     private String category;
-    private String status; // Deberia ser un Enum: ACTIVE, INACTIVE, DISCONTINUED
+
+    @Enumerated(EnumType.STRING)
+    private ProductStatus status;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -31,7 +33,7 @@ public class Product {
     public Product() {}
 
     public Product(String sku, String name, String description, BigDecimal price,
-                   Integer stock, String category, String status) {
+                   Integer stock, String category, ProductStatus status) {
         this.sku = sku;
         this.name = name;
         this.description = description;
@@ -57,8 +59,8 @@ public class Product {
     public void setStock(Integer stock) { this.stock = stock; }
     public String getCategory() { return category; }
     public void setCategory(String category) { this.category = category; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public ProductStatus getStatus() { return status; }
+    public void setStatus(ProductStatus status) { this.status = status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
     public LocalDateTime getUpdatedAt() { return updatedAt; }
