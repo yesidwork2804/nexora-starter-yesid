@@ -1,0 +1,12 @@
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+
+@NgModule({
+  declarations: [],
+  imports: [CommonModule, HttpClientModule, FormsModule, ReactiveFormsModule],
+  providers: [],
+  bootstrap: [],
+})
+export class AuthModule {}
