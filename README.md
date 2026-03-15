@@ -1,6 +1,6 @@
 # Nexora Migration — README técnico
 
-Repositorio con los módulos de la prueba técnica (frontend + backend + funciones). Este README está escrito como guía de ejecución y como bitácora de decisiones.
+Repositorio con los módulos de la prueba técnica (frontend + backend + funciones). Este README parte de la base de lo entregado en la **prueba técnica** en la rama `main` y documenta las **mejoras aplicadas después** sobre los módulos.
 
 ---
 
@@ -61,37 +61,19 @@ npm test
 - Se registraron providers en `AppModule` para resolver contratos por implementación HTTP.
 
 ### 🅜 Módulo 2 — `nexora-functions`
-- Se migró `syncInventory` a CloudEvents (2da generación) con `@google-cloud/functions-framework`.
-- Se reemplazaron credenciales hardcodeadas por variables de entorno.
-- Se aplicó logging JSON estructurado para mejor observabilidad.
-- Se separaron responsabilidades: una función por archivo.
-- Se ajustaron tests Jest para validar el handler CloudEvents.
+- Se implementó **validación estricta del payload CloudEvents** (campos requeridos y tipos) en `syncInventory`.
+- Se extrajo la validación a un archivo propio (`validators/inventorySyncValidator.js`) para código limpio y reutilizable.
+- Se mejoraron **mensajes de error** para que sean claros.
+- Se ampliaron **pruebas unitarias Jest** para cubrir múltiples casos inválidos y validar nuevos errores.
 
 ### 🅜 Módulo 3A — `nexora-api`
-- Se separaron capas creando `Service` y moviendo la lógica fuera del controller.
-- Se usó inyección por constructor para dependencias explícitas y mejor testabilidad.
-- Se agregaron DTOs para que el frontend no dependa directamente del modelo de base de datos.
-- Se movió configuración sensible a variables de entorno (`application.properties` con placeholders).
-- Se convirtió `status` a Enum para integridad de dominio.
-- Se implementó `@RestControllerAdvice` + 2 unit tests con JUnit 5 + Mockito.
+- Se agregaron validaciones con `@Valid` en los requests (DTOs) para rechazar payloads inválidos desde el controller.
+- Se dejó un test mínimo de controller para validar el rechazo de un body inválido al crear un producto.
 
 ### 🅜 Módulo 3B — `nexora-inventory-ui`
-- Se eliminó `any` tipando la respuesta con `Product`.
-- Se movió la URL base a `VITE_API_URL`.
-- Se extrajo la lógica de carga de productos a un hook `useProducts`.
-- Se mejoraron estados con indicador de éxito y botón de reintento.
-
----
-
-## 🗺️ Mapeo al proyecto Nexora (máx. 10 líneas)
-
-Lo trabajado se mapea a una migración real incremental:
-1) Aislar lógica por capas (controller/service/repository),
-2) estabilizar contratos (DTOs + tipado fuerte en front),
-3) mover configuración a variables de entorno para que cada ambiente (local/dev/prod) use sus valores sin cambiar código,
-4) endurecer dominio (enums/validaciones),
-5) mejorar la trazabilidad/diagnóstico cuando algo falla (logging estructurado y manejo de errores más claro).
-En una migración real esperaría desafíos extra como datos viejos inconsistentes (duplicados/campos faltantes) y evitar romper pantallas existentes mientras se migra por partes.
+- Se robusteció el hook `useProducts` para validar que la respuesta sea JSON antes de parsearla.
+- Se mejoraron los mensajes de error: distingue entre red, HTTP y respuesta no JSON, con textos guiados.
+- Se agregó validación temprana de `VITE_API_URL` con mensaje claro si no está configurado.
 
 ---
 
