@@ -84,12 +84,21 @@ En cada módulo respondo estas 4 preguntas:
   - Para la tarea 1.3 se asumió la existencia de la ruta de reportes detrás de Kong.
   - Los errores del test fallan porque el spec todavía prueba el “wrapper” viejo (`status`, `data`, `pagination`).
   - Se escogieron 2 tests para las funciones (`updateStock`, `deactivateProduct`) por temas de complejidad: si son más complejos tienden a romperse más; los demás pueden tener una funcionalidad parecida a la que ya traía la función `getProducts`.
+  - **Refactorización de Arquitectura**: Se eliminó la carpeta `features` y adoptó arquitectura limpia con `ui` (componentes) y `core` (application + infrastructure).
+  - **UI Layer**: Componentes en `src/app/ui/` separados por dominio (products, customers, orders, inventory).
+  - **Core Layer**: 
+    - `core/application/`: Módulos Angular y routing por dominio
+    - `core/infrastructure/services/`: Servicios HTTP con CRUD operations
+  - **Tests Unitarios**: Se crearon archivos `.spec.ts` para todos los servicios.
 
 - **[Trade-offs]**
   - No se cubrieron todos los casos de tests por tiempo; se escogieron los de mayor impacto.
+  - Se mantuvo la arquitectura simple para no sobre-complicar la refactorización.
 
 - **[Con más tiempo]**
   - Completar cobertura de tests y revisar consistencia del contrato en todos los endpoints.
+  - Agregar más validaciones y componentes de UI reutilizables.
+  - Implementar guards para mejorar manejo de rutas.
 
 - **[Incertidumbre]**
   - No tengo visibilidad completa de cómo está configurado Kong en el entorno real (rutas, headers, transforms). En el starter asumí esa parte para poder avanzar sin bloquear el módulo.
