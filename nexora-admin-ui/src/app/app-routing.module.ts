@@ -5,37 +5,30 @@ const routes: Routes = [
   {
     path: 'products',
     loadChildren: () =>
-      import('./features/products/products.module').then(
+      import('./core/application/products/products.module').then(
         (m) => m.ProductsModule,
       ),
-    canActivate: [],
-  },
-  {
-    path: 'orders',
-    loadChildren: () =>
-      import('./features/orders/orders.module').then((m) => m.OrdersModule),
-    canActivate: [],
   },
   {
     path: 'customers',
     loadChildren: () =>
-      import('./features/customers/customers.module').then(
+      import('./core/application/customers/customers.module').then(
         (m) => m.CustomersModule,
       ),
-    canActivate: [],
+  },
+  {
+    path: 'orders',
+    loadChildren: () =>
+      import('./core/application/orders/orders.module').then(
+        (m) => m.OrdersModule,
+      ),
   },
   {
     path: 'inventory',
     loadChildren: () =>
-      import('./features/inventory/inventory.module').then(
+      import('./core/application/inventory/inventory.module').then(
         (m) => m.InventoryModule,
       ),
-    canActivate: [],
-  },
-  {
-    path: 'login',
-    loadChildren: () =>
-      import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
   { path: '', redirectTo: 'products', pathMatch: 'full' },
   { path: '**', redirectTo: 'products' },

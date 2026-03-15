@@ -5,12 +5,8 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+      imports: [RouterTestingModule],
+      declarations: [AppComponent],
     }).compileComponents();
   });
 
@@ -26,10 +22,32 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('nexora-admin-ui');
   });
 
-  it('should render title', () => {
+  it('should render navbar', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('nexora-admin-ui app is running!');
+    expect(compiled.querySelector('.navbar')).toBeTruthy();
+    expect(compiled.querySelector('.nav-brand h1')?.textContent).toContain(
+      'Nexora',
+    );
+  });
+
+  it('should render navigation links', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const navLinks = compiled.querySelectorAll('.nav-link');
+    expect(navLinks.length).toBe(4);
+    expect(navLinks[0].textContent).toContain('Productos');
+    expect(navLinks[1].textContent).toContain('Clientes');
+    expect(navLinks[2].textContent).toContain('Órdenes');
+    expect(navLinks[3].textContent).toContain('Inventario');
+  });
+
+  it('should render router outlet', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('router-outlet')).toBeTruthy();
   });
 });
