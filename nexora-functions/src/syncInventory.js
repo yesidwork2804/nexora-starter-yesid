@@ -1,6 +1,7 @@
 'use strict';
 
 const functions = require('@google-cloud/functions-framework');
+const { validateInventorySyncPayload } = require('./validators/inventorySyncValidator');
 
 const ERP_API_KEY        = process.env.ERP_API_KEY;
 const ERP_URL            = process.env.ERP_URL;
@@ -9,12 +10,8 @@ const LOW_STOCK_THRESHOLD = 10;
 
 functions.cloudEvent('onInventorySync', (cloudEvent) => {
 
-  const { productId, sku, oldStock, newStock, warehouseId } = cloudEvent.data || {};
-
-  // Validacion minima — sin manejo de tipos
-  if (!productId || newStock === undefined || newStock === null) {
-    throw new Error('Missing required fields: productId, newStock');
-  }
+  const { productId, sku, oldStock, newStock, warehouseId } =
+    validateInventorySyncPayload(cloudEvent.data);
 
   const stockDiff = newStock - (oldStock || 0);
   const timestamp = new Date().toISOString();
