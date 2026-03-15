@@ -6,6 +6,7 @@ import com.nexora.api.dto.UpdateProductStatusRequestDto;
 import com.nexora.api.model.Product;
 import com.nexora.api.model.ProductStatus;
 import com.nexora.api.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,14 +46,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto product) {
+    public ProductResponseDto createProduct(@Valid @RequestBody ProductRequestDto product) {
         // Sin @Valid: acepta cualquier body sin validar
         // Validaciones manuales hardcodeadas dentro del controller
         return toResponseDto(productService.createProduct(toEntity(product)));
     }
 
     @PutMapping("/{id}/status")
-    public ProductResponseDto updateStatus(@PathVariable Long id, @RequestBody UpdateProductStatusRequestDto body) {
+    public ProductResponseDto updateStatus(@PathVariable Long id, @Valid @RequestBody UpdateProductStatusRequestDto body) {
         // .get() sin manejo de Optional
         // Sin validacion del status recibido
         return toResponseDto(productService.updateStatus(id, body.getStatus()));

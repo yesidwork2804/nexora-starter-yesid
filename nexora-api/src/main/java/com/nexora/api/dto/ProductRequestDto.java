@@ -1,15 +1,40 @@
 package com.nexora.api.dto;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
 public class ProductRequestDto {
 
+    @NotBlank(message = "sku es requerido")
+    @Size(max = 50, message = "sku excede el tamaño permitido")
     private String sku;
+
+    @NotBlank(message = "name es requerido")
+    @Size(max = 200, message = "name excede el tamaño permitido")
     private String name;
+
+    @Size(max = 1000, message = "description excede el tamaño permitido")
     private String description;
+
+    @NotNull(message = "price es requerido")
+    @DecimalMin(value = "0.01", message = "price debe ser mayor a cero")
     private BigDecimal price;
+
+    @Positive(message = "stock debe ser mayor a cero")
     private Integer stock;
+
+    @Size(max = 200, message = "category excede el tamaño permitido")
     private String category;
+
+    @Pattern(
+            regexp = "ACTIVE|INACTIVE|DISCONTINUED",
+            message = "status debe ser uno de: ACTIVE, INACTIVE, DISCONTINUED"
+    )
     private String status;
 
     public ProductRequestDto() {
