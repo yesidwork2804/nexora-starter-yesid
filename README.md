@@ -55,10 +55,15 @@ npm test
 ## 🌟 Mejoras y actualizaciones por módulo
 
 ### 🅜 Módulo 1 — `nexora-admin-ui`
-- Se organizó el código con arquitectura de cebolla (dominio / infraestructura / UI) para facilitar la inyección de dependencias.
+- Se organizó el código con arquitectura limpia separando responsabilidades:
+  - **`ui/pages/`**: Componentes de presentación (Products, Customers, Orders, Inventory)
+  - **`core/application/`**: Módulos Angular con routing y providers por dominio
+  - **`core/infrastructure/`**: Servicios HTTP que implementan los gateways
+  - **`core/domain/`**: Casos de uso, modelos y contratos (gateways)
 - Se agregaron casos de uso que centralizan la lógica y desacoplan la UI del HTTP.
 - Se crearon pruebas unitarias para usecases y gateway HTTP.
-- Se registraron providers en `AppModule` para resolver contratos por implementación HTTP.
+- Se registraron providers en los módulos de aplicación para resolver contratos por implementación HTTP.
+- Se implementó navbar responsive con navegación entre módulos y router outlet.
 
 ### 🅜 Módulo 2 — `nexora-functions`
 - Se implementó **validación estricta del payload CloudEvents** (campos requeridos y tipos) en `syncInventory`.
