@@ -3,10 +3,17 @@ import { ObtenerProductosUseCase } from '../../../core/domain/usecases/products/
 
 @Component({
   selector: 'app-products',
-  template: `<p>Esta es la pagina de productos</p>`,
-  styleUrls: ['./products.css'],
+  template: `
+    <div class="products-container">
+      <h2>📦 Productos</h2>
+      <div class="content-section">
+        <p>Gestión de productos del sistema Nexora</p>
+      </div>
+    </div>
+  `,
+  styleUrls: ['./products.component.css'],
 })
-export class Products implements OnInit {
+export class ProductsComponent implements OnInit {
   constructor(
     @Inject(ObtenerProductosUseCase)
     private readonly obtenerProductosUseCase: ObtenerProductosUseCase,
@@ -14,7 +21,7 @@ export class Products implements OnInit {
 
   ngOnInit(): void {
     this.obtenerProductosUseCase.ejecutar().subscribe((products) => {
-      console.log(products);
+      console.log('Products loaded:', products);
     });
   }
 }

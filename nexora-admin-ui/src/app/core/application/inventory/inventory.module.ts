@@ -4,12 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { INVENTORY_GATEWAY } from '../../domain/gateways/inventory.gateway';
 import { InventoryHttpService } from '../../infrastructure/service/inventory-http.service';
-import { Inventory } from '../../../ui/pages/inventory/inventory';
+import { InventoryComponent } from '../../../ui/pages/inventory/inventory.component';
 import { InventoryRoutingModule } from './inventory-routing.module';
 
 @NgModule({
   // Declaraciones
-  declarations: [Inventory],
+  declarations: [InventoryComponent],
 
   // Importaciones
   imports: [

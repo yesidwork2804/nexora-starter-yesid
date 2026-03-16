@@ -4,11 +4,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CUSTOMER_GATEWAY } from '../../domain/gateways/customer.gateway';
 import { CustomerHttpService } from '../../infrastructure/service/customer-http.service';
-import { Customers } from '../../../ui/pages/customers/customers';
+import { CustomersComponent } from '../../../ui/pages/customers/customers.component';
 import { CustomersRoutingModule } from './customers-routing.module';
 
 @NgModule({
-  declarations: [Customers],
+  declarations: [CustomersComponent],
   imports: [
     CommonModule,
     HttpClientModule,

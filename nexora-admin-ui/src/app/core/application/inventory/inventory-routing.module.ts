@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Inventory } from '../../../ui/pages/inventory/inventory';
+import { InventoryComponent } from '../../../ui/pages/inventory/inventory.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: Inventory
-  }
+    component: InventoryComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class InventoryRoutingModule { }
+export class InventoryRoutingModule {}

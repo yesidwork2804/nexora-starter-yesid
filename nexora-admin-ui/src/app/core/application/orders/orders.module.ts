@@ -3,13 +3,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ORDER_GATEWAY } from '../../domain/gateways/order.gateway';
 import { OrderHttpService } from '../../infrastructure/service/order-http.service';
-import { Orders } from '../../../ui/pages/orders/orders';
+import { OrdersComponent } from '../../../ui/pages/orders/orders.component';
 import { OrdersRoutingModule } from './orders-routing.module';
 import { CommonModule } from '@angular/common';
 import { ProductsModule } from '../products/products.module';
 
 @NgModule({
-  declarations: [Orders],
+  declarations: [OrdersComponent],
   imports: [
     CommonModule,
     HttpClientModule,
